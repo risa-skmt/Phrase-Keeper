@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
-const InputForm = ({wordList, setWordList}) => {
+const InputForm = ({phraseList, setPhraseList}) => {
 
+//文字をinputした情報をinputTextに入れていく
 const [inputText, setInputText] = useState("");
 
 //inputに入力してエンターを押したら、画面が再読み込みされてコンソールが表示されない問題を
@@ -15,13 +16,16 @@ const [inputText, setInputText] = useState("");
 
 
         // 言葉(の枠)を追加していく
-        setWordList([
-          ...wordList,
+        setPhraseList([
+          ...phraseList,
           {
+            id: phraseList.length,
             text: inputText
           }
-        ]);
-        console.log(wordList);
+        ])
+
+        // submitした時、入力した文字を消してinoutFormを空にする
+        setInputText("")
    }
 
 const handleChange = (e) => {
@@ -36,7 +40,7 @@ const handleChange = (e) => {
      {/* inputformのボタンが押されたらhandlesubmitを呼び出し */}
       <form onSubmit={handleSubmit}>     
       {/* inputに入力される度にhandleChangeを呼び出す */}
-        <input type="text" onChange={handleChange}/>
+        <input type="text" onChange={handleChange} value={inputText}/>
         <button>
         <i className="fa-solid fa-plus"></i>
          </button>
