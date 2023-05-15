@@ -12,7 +12,7 @@ const port = 3001;
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
+  password: 'my00sql0first',
   database: 'memo_app'
 });
 
@@ -38,7 +38,8 @@ app.get('/', (req, res) => {
                 console.log('接続エラー');
                 throw err;
             }
-            res.json({message: results[0].name});
+            //res.json({message: results[0].name});
+            res.json({data: results}); // 全てのデータを返す場合
         }
     )
 });
