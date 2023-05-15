@@ -14,13 +14,17 @@ function App() {
       .then((res) => res.json())
       //生成したjsオブジェクトをdataに代入
       //data.messageで取り出したデータをuseStateに保存
-      .then((data) => setMessage(data.message));
+      .then((data) => setMessage(data.message))
+      //追加
+      .catch((error) => console.log(error));
   },[])
 
 
   return (
     <div className="App">
       <h1>フロントエンド</h1>
+      {/* useStateに保存した値を表示 */}
+      <p>{ message }</p>
     </div>
   );
 }
