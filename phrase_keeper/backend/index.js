@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'my00sql0first',
-  database: 'memo_app'
+  database: 'phrase_keeper'
 });
 
 //'/'パスにGET要求があった際に実行する処理
@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
     // /apiにアクセスした際に、MySQLに対して行う処理
     connection.query(
         //usersテーブルからデータを取得する処理
-        'SELECT * FROM users',
+        'SELECT * FROM phrases',
         function(err, results, fields){
             if(err){
                 console.log('接続エラー');

@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>フロントエンド</h1>
+      <h1>Phrase Keeper</h1>
       {/* useStateに保存した値を表示
       <p>{ message }</p> */}
      {/* バックエンドから取得した全てのデータをdataステートに保存し、map関数で表示 */}
