@@ -29,7 +29,7 @@ function App() {
       <p>{ message }</p> */}
      {/* バックエンドから取得した全てのデータをdataステートに保存し、map関数で表示 */}
        {data.map((item) => (
-      <p key={item.id}>{item.name}</p>
+      <p key={item.id}>{item.phrase}</p>
     ))}
     </div>
   );
