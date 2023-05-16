@@ -1,7 +1,5 @@
 import './App.css';
-import Title  from "./components/Title";
-import InputForm from './components/InputForm';
-import WordsList from './components/PhraseList';
+
 //1．useStateとuseEffectをインポート
 import { useState,useEffect } from 'react';
 
@@ -31,10 +29,7 @@ const [phraseList, setPhraseList] = useState([]);
 
   return (
     <div className="App">
-      {/* <h1>Phrase Keeper</h1> */}
-      <Title />
-      <InputForm phraseList={phraseList} setPhraseList={setPhraseList}/>
-      <WordsList phraseList={phraseList} setPhraseList={setPhraseList}/>
+      <h1>Phrase Keeper</h1>
       
       
       {/* useStateに保存した値を表示
