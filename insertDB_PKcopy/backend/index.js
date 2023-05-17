@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   app.get('/api', (req, res) => {
     // /apiにアクセスした際に、MySQLに対して行う処理
     connection.query(
-        //usersテーブルからデータを取得する処理
+        //phraseテーブルからデータを取得する処理
         'SELECT * FROM phrases',
         function(err, results, fields){
             if(err){
@@ -43,6 +43,7 @@ app.get('/', (req, res) => {
         }
     )
 });
+
 
 
 
