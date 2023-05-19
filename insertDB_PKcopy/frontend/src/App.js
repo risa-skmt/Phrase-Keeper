@@ -1,49 +1,71 @@
 import './App.css';
 import Title  from "./components/Title";
 import InputForm from './components/InputForm';
-
 import DB from './components/DB';
 
-
-//1．useStateとuseEffectをインポート
-import { useState,useEffect } from 'react';
-
-
+import { useEffect, useState } from 'react';
+import axios from 'axios'
 
 function App() {
-  //useStateの初期値（空）を設定
-  // const [message, setMessage] = useState('');
-//dataステートを初期化（？）
+//ステートを初期化
   const [data, setData] = useState([]);
+ 
+//fetchData関数。/apiにGETリクエストを送信しレスポンスを処理
+const fetchData = () => {
+  axios.get('/api')
+    .then(response => {             //リクエスト成功時
+      setData(response.data.data);    //dataオブジェクトの中にあるresponse.dataをdataにsetする処理
+    })
+    .catch(error => {               //リクエスト失敗時
+      console.error(error);
+    });
+};
+
+// inputValueのデータを/api/insertにPOSTリクエストをする
+const handleInsert = (inputValue) => {
+
+  if (inputValue.trim() === '') {
+    // inputValueが空の場合は何も実行しない
+    return;
+  }
+
+  //inputValueの中身がある時
+  axios.post('/api/insert', { inputValue })
+    .then(response => {
+      console.log(response.data);
+      fetchData();           //データの再取得
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+
+
+
   
-// phraseListの変数で入力された文字を入れる。状態を管理する。配列を用意
-//setPhraseListは状態を変更するための変数 //型は配列にしておく
-//const [phraseList, setPhraseList] = useState([]);
+  // ページが最初にロードされた時にのみfetchPhrases関数を実行してデータを取得
+  useEffect(() => {
+    fetchPhrases();
+  }, []);
 
 
-const [toInputForm, setInputForm] = useState({
-  test: "hello"
-});
-
+// データベースからフレーズデータを取得する関数
+const fetchPhrases = () => {
+  axios.get('/api')
+    .then(response => {
+      setData(response.data.data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
 
 
   return (
     <div className="App">
       <Title />
-      <InputForm toInputForm={toInputForm}/>
-      <DB data={data} setData={setData}/> 
-      
-     
-      
-      {/* useStateに保存した値を表示
-      <p>{ message }</p> */}
-     {/* バックエンドから取得した全てのデータをdataステートに保存し、map関数で表示 */}
-
-{/* 消す？？ */}
-        {/* {data.map((item) => (
-      <p key={item.id} class="phrase-container">{item.phrase}</p> 
-    ))} */}
-     
+      <InputForm onInsert={handleInsert} />   {/* InputForm.jsxでフォーム送信された時にonInsertに渡された関数handleInsertが呼び出される */}
+      <DB data={data} />      
     </div>
   );
 }

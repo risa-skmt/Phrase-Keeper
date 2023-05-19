@@ -7,6 +7,8 @@ const app = express();
 //ポート番号を指定
 const port = 3001;
 
+app.use(express.json());
+
 
 //mysqlと接続するための設定
 const connection = mysql.createConnection({
@@ -16,36 +18,37 @@ const connection = mysql.createConnection({
   database: 'phrase_keeper'
 });
 
-//'/'パスにGET要求があった際に実行する処理
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+
+//POSTリクエストが /api/insert エンドポイントに対して送信された場合の処理
+// リクエストのボディからinputValueを取得しデータベースに追加
+app.post('/api/insert', (req, res) => {
+  const inputValue = req.body.inputValue;
+
+  const sql = 'INSERT INTO phrases (phrase) VALUES (?)';
+  const values = [inputValue];
+
+  connection.query(sql, values, (error, result) => {
+    if (error) {
+      console.error('Error inserting data into database:', error);
+      res.status(500).json({ error: 'Error inserting data into database' });
+    } else {
+      console.log('Data inserted successfully');
+      res.status(200).json({ message: 'Data inserted successfully' });
+    }
+  });
+})
+
+//GETリクエストが /api エンドポイントに対して送信された場合の処理
+app.get('/api', (req, res) => {
+  connection.query('SELECT * FROM phrases', (error, results) => {
+    if (error) {
+      console.error('Error retrieving data from database:', error);
+      res.status(500).json({ error: 'Error retrieving data from database' });
+    } else {
+      res.status(200).json({ data: results });
+    }
+  });
 });
-
-
-//'/api'パスにGET要求があった際に実行する処理
-// app.get("/api", (req, res) => {
-//     res.json({message: "Hello World"});
-//   });
-
-
-  app.get('/api', (req, res) => {
-    // /apiにアクセスした際に、MySQLに対して行う処理
-    connection.query(
-        //phraseテーブルからデータを取得する処理
-        'SELECT * FROM phrases',
-        function(err, results, fields){
-            if(err){
-                console.log('接続エラー');
-                throw err;
-            }
-            //res.json({message: results[0].name});
-            res.json({data: results}); // 全てのデータを返す場合
-        }
-    )
-});
-
-
-
 
 //3000ポートでlisten
 app.listen(port, () => {
