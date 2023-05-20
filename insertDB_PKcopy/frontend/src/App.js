@@ -8,6 +8,7 @@ import axios from 'axios'
 
 import Login from "./components/Login.jsx";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import SignUp from './components/SignUp';
 
 
 function App() {
@@ -77,6 +78,7 @@ const fetchPhrases = () => {
             </div>
       )} />
       <Route path="/login" component = {Login} />
+      <Route path="/signup" component = {SignUp} />
       </Switch>
      </div>
     </Router>
