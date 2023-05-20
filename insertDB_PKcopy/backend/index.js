@@ -19,6 +19,39 @@ const connection = mysql.createConnection({
 });
 
 
+//POSTリクエストが/loginに対して送信された時の処理
+app.post('/login', (req, res) => {
+  const { name, email } = req.body;
+
+  //ユーザ認証処理
+  const sql = 'SELECT * FROM users WHERE name = ?';
+  const values = [name];
+
+  connection.query(sql, values, (error, results) => {
+    if (error) {
+      console.error('Error retrieving data from database:', error);
+      res.status(500).json({ error: 'Error retrieving data from database' });
+    } else {
+      if (results.length > 0) {
+        const user = results[0];
+        if (user.email === email) {
+          // ユーザー認証成功
+          res.status(200).json({ message: '認証成功' });
+        } else {
+          // ユーザー認証失敗：emailが一致しない
+          res.status(401).json({ error: '認証失敗' });
+        }
+      } else {
+        // ユーザー認証失敗：nameが存在しない
+        res.status(401).json({ error: '認証失敗' });
+      }
+    }
+  });
+});
+
+
+
+
 //POSTリクエストが /api/insert エンドポイントに対して送信された場合の処理
 // リクエストのボディからinputValueを取得しデータベースに追加
 app.post('/api/insert', (req, res) => {
