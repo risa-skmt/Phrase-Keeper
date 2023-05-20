@@ -6,6 +6,10 @@ import DB from './components/DB';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
 
+import Login from "./components/Login.jsx";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+
 function App() {
 //ステートを初期化
   const [data, setData] = useState([]);
@@ -62,11 +66,20 @@ const fetchPhrases = () => {
 
 
   return (
+    <Router>
     <div className="App">
-      <Title />
-      <InputForm onInsert={handleInsert} />   {/* InputForm.jsxでフォーム送信された時にonInsertに渡された関数handleInsertが呼び出される */}
-      <DB data={data} />      
-    </div>
+      <Switch>
+      <Route exact path="/" component={() => (
+            <div>
+               <Title />
+               <InputForm onInsert={handleInsert} />   {/* InputForm.jsxでフォーム送信された時にonInsertに渡された関数handleInsertが呼び出される */}
+               <DB data={data} />      
+            </div>
+      )} />
+      <Route path="/login" component = {Login} />
+      </Switch>
+     </div>
+    </Router>
   );
 }
 
