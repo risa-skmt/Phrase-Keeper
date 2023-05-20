@@ -1,24 +1,14 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Login (){  
-    // //文字をinputした情報をinputTextに入れていく.setInputValueは状態を管理
-    // const [inputValue, setInputValue] = useState('');
-  
-    // const handleInputChange = (event) => {
-    //   setInputValue(event.target.value); // 打ち込んだ文字の情報をInputValueに
-    // };
-  
-    // const handleSubmit = (event) => {
-    //   event.preventDefault();  //inputに入力してエンターを押したら、画面が再読み込みされてコンソールが表示されない問題を解決する（フォームのデフォルトを消す）
-    //   onInsert(inputValue); //フォームの入力値(inputValue)をonInsertに定義し、InputFormコンポーネントに渡す。→ 親コンポーネント(App.js)で処理できる
-    //   setInputValue(''); // submitした時、入力した文字を消してinoutFormを空にする
-    // };
+    
   
     return (
       <div className="LoginForm">
         <form action="">
             <h2>Login</h2>
-            <div className='InputUserInfo'>
+            <div className='InputUserInfo_login'>
                 <h3>Name</h3>
                 <input type ="text"></input>
                 <h3>E-mail</h3>
@@ -26,6 +16,10 @@ function Login (){
                 
                 <div className='LoginButton'>
                 <input type ="submit" value ="Login"></input>
+                </div>
+
+                <div>
+                <Link to ="/signup" className='SignUpButton'>SignUp</Link>
                 </div>
             </div>
                 
