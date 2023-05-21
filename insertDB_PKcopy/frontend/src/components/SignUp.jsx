@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import SignUpValidation from './SignUpValidation';
+import { createBrowserHistory } from 'history'
 
 function SignUp (){  
     
@@ -14,14 +15,21 @@ function SignUp (){
     const [errors, setErrors] = useState({})
     
     const handleInput = (event) =>{
-        const { name, value } = event.target;
-        setValues((prev) => ({ ...prev, [name]: value }));
+        const { name, value } = event.target;           //InputFormのname属性と値を取得
+        setValues((prev) => ({ ...prev, [name]: value }));  //setValuesによってvaluesの該当フィールドを更新
     }
     
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        setErrors(SignUpValidation(values));
-      }
+    const history = createBrowserHistory();
+
+      function handleSubmit(event) {
+    event.preventDefault();
+    setErrors(SignUpValidation(values)); //valuesのバリデーションをする。エラーならerrorsを更新
+
+     // エラーチェックが通った場合のみリダイレクト
+     if (Object.keys(errors).length === 0) {
+      history.push('/login');
+    }
+  }
 
 
     return (
