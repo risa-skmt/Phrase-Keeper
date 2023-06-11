@@ -24,7 +24,7 @@ app.post('/login', (req, res) => {
   const { name, email } = req.body;
 
   //ユーザ認証処理
-  const sql = 'SELECT * FROM users WHERE name = ?';
+  const sql = 'SELECT * FROM users WHERE name = ?'; //?はプレースホルダー（DELETE FROM user--など、DBに対して危険な入力を避けるため）
   const values = [name];
 
   connection.query(sql, values, (error, results) => {
@@ -32,9 +32,9 @@ app.post('/login', (req, res) => {
       console.error('Error retrieving data from database:', error);
       res.status(500).json({ error: 'Error retrieving data from database' });
     } else {
-      if (results.length > 0) {
-        const user = results[0];
-        if (user.email === email) {
+      if (results.length > 0) {     //resultsのlengthが０以上の時は検索結果が存在する。
+        const user = results[0];    //そのうちの最初の検索結果をuserとして取得する。
+        if (user.email === email) {  //userのemailがリクエストのemailと一致するか
           // ユーザー認証成功
           res.status(200).json({ message: '認証成功' });
         } else {
@@ -71,9 +71,21 @@ app.post('/api/insert', (req, res) => {
   });
 })
 
-//GETリクエストが /api エンドポイントに対して送信された場合の処理
-app.get('/api', (req, res) => {
+//GETリクエストが /api/all_phrases エンドポイントに対して送信された場合の処理
+app.get('/api/all_phrases', (req, res) => {
   connection.query('SELECT * FROM phrases', (error, results) => {
+    if (error) {
+      console.error('Error retrieving data from database:', error);
+      res.status(500).json({ error: 'Error retrieving data from database' });
+    } else {
+      res.status(200).json({ data: results });
+    }
+  });
+});
+
+//GETリクエストが /api/users エンドポイントに対して送信された場合の処理
+app.get('/api/users', (req, res) => {
+  connection.query('SELECT * FROM users', (error, results) => {
     if (error) {
       console.error('Error retrieving data from database:', error);
       res.status(500).json({ error: 'Error retrieving data from database' });
