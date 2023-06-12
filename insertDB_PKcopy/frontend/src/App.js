@@ -15,9 +15,9 @@ function App() {
 //ステートを初期化
   const [data, setData] = useState([]);
  
-//fetchData関数。/apiにGETリクエストを送信しレスポンスを処理
+//fetchData関数。/api/all_phrasesにGETリクエストを送信しレスポンスを処理
 const fetchData = () => {
-  axios.get('/api')
+  axios.get('/api/all_phrases')
     .then(response => {             //リクエスト成功時
       setData(response.data.data);    //dataオブジェクトの中にあるresponse.dataをdataにsetする処理
     })
@@ -56,9 +56,10 @@ const handleInsert = (inputValue) => {
 
 // データベースからフレーズデータを取得する関数
 const fetchPhrases = () => {
-  axios.get('/api')
+  axios.get('/api/all_phrases')
     .then(response => {
-      setData(response.data.data);
+      const filteredData = response.data.data.filter(item => item.user_id === 1)   //user_idが１のもの
+      setData(filteredData);
     })
     .catch(error => {
       console.error(error);

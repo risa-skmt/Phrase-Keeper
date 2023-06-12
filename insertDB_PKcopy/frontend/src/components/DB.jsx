@@ -1,5 +1,4 @@
-import React, { useEffect }  from 'react';
-import axios from 'axios'
+
 
 function DB({ data }) {      //App.jsのsetDataとdataを受け取っている
   return (

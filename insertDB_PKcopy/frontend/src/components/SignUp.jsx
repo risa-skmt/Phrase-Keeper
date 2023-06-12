@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import  { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import SignUpValidation from './SignUpValidation';
-import { createBrowserHistory } from 'history'
+import axios from 'axios';
+
 
 function SignUp (){  
     
@@ -9,9 +11,12 @@ function SignUp (){
         name: '',
         email_1: '',
         email_2: ''
-      })
+     })
     
-    
+
+ 
+
+     const history = useHistory();
     const [errors, setErrors] = useState({})
     
     const handleInput = (event) =>{
@@ -19,17 +24,19 @@ function SignUp (){
         setValues((prev) => ({ ...prev, [name]: value }));  //setValuesによってvaluesの該当フィールドを更新
     }
     
-    const history = createBrowserHistory();
+  
 
-      function handleSubmit(event) {
+const handleSubmit = (event) =>{
     event.preventDefault();
     setErrors(SignUpValidation(values)); //valuesのバリデーションをする。エラーならerrorsを更新
-
-     // エラーチェックが通った場合のみリダイレクト
-     if (Object.keys(errors).length === 0) {
-      history.push('/login');
+    if(errors.name === "" && errors.email_1 === "" && errors.email_2 === ""){
+      axios.post('http://localhost:3001/signup', values)
+      .then(res => {
+        history.push('/')
+      })
+      .catch(err => console.log(err));
     }
-  }
+}
 
 
     return (

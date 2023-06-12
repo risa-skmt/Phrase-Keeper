@@ -7,7 +7,10 @@ const app = express();
 //ポート番号を指定
 const port = 3001;
 
+const cors = require('cors');
+
 app.use(express.json());
+app.use(cors());
 
 
 //mysqlと接続するための設定
@@ -27,12 +30,12 @@ app.post('/login', (req, res) => {
   const sql = 'SELECT * FROM users WHERE name = ?'; //?はプレースホルダー（DELETE FROM user--など、DBに対して危険な入力を避けるため）
   const values = [name];
 
-  connection.query(sql, values, (error, results) => {
+  connection.query(sql, values, (error, results) => {      //resultsはDBの行をオブジェクトとして持つ配列　　例）[{user_id:1, name: "ri", email:"hi@gmail.com"} {user_id:2, name: "ri", email:"hi@gmail.com"}]
     if (error) {
       console.error('Error retrieving data from database:', error);
       res.status(500).json({ error: 'Error retrieving data from database' });
     } else {
-      if (results.length > 0) {     //resultsのlengthが０以上の時は検索結果が存在する。
+      if (results.length > 0) {     //resultsのlengthが1以上の時は検索結果が存在する。
         const user = results[0];    //そのうちの最初の検索結果をuserとして取得する。
         if (user.email === email) {  //userのemailがリクエストのemailと一致するか
           // ユーザー認証成功
@@ -48,6 +51,23 @@ app.post('/login', (req, res) => {
     }
   });
 });
+
+
+//POSTリクエストが/signupに対して送信された時の処理
+app.post('/signup', (req, res) => {
+  const sql = "INSERT INTO users ('name', 'email_1', 'email_2') VALUES (?)";
+  const values = [
+    req.body.name,
+    req.body.email_1,
+    req.body.email_2
+  ]
+  connection.query(sql, [values], (error, data) => {
+    if(error){
+      return res.status(500).json({ error: 'Error inserting data into database' })
+    }
+    return res.json(data);
+  })
+})
 
 
 

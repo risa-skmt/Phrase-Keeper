@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+
 
 
 function InputForm ({ onInsert }){  //onInsert(=inputValue)を引数に取る。InputForm.jsxを他ファイルで読み込めば、inputValueの処理も他ファイルでできる
